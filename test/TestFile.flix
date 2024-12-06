@@ -79,7 +79,7 @@ mod TestFile {
 
     @test
     def openClose01(): Bool \ IO =
-        match File.open("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin", ReadOnly) {
+        match File.open("test-resources/ABCD.bin", ReadOnly) {
             case Ok(f) => match File.close!(f) {
                 case Ok() => true
                 case _    => false
@@ -89,7 +89,7 @@ mod TestFile {
 
     @test
     def openClose02(): Bool \ IO =
-        match File.open("./main/test/ca/uwaterloo/flix/library/testdata/255-1byte.bin", ReadOnly) {
+        match File.open("test-resources/255-1byte.bin", ReadOnly) {
             case Ok(f) => match File.close!(f) {
                 case Ok() => true
                 case _    => false
@@ -103,14 +103,14 @@ mod TestFile {
 
     @test
     def length01(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                         File.length,
                         len -> len == 8i64)
             |> Result.getWithDefault(false)
 
     @test
     def length02(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/255-1byte.bin",
+        testReadFunction("test-resources/255-1byte.bin",
                     File.length,
                     len -> len == 1i64)
             |> Result.getWithDefault(false)
@@ -121,14 +121,14 @@ mod TestFile {
 
     @test
     def size01(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                         File.size,
                         len -> len == 8i64)
             |> Result.getWithDefault(false)
 
     @test
     def size02(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/255-1byte.bin",
+        testReadFunction("test-resources/255-1byte.bin",
                     File.size,
                     len -> len == 1i64)
             |> Result.getWithDefault(false)
@@ -139,21 +139,21 @@ mod TestFile {
 
     @test
     def seek01(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     f -> File.seek!(0i64, f) *> File.readChar!(f),
                     ch -> ch == 'A')
             |> Result.getWithDefault(false)
 
     @test
     def seek02(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     f -> File.seek!(2i64, f) *> File.readChar!(f),
                     ch -> ch == 'B')
             |> Result.getWithDefault(false)
 
     @test
     def seek03(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     f -> File.seek!(4i64, f) *> File.readChar!(f),
                     ch -> ch == 'C')
             |> Result.getWithDefault(false)
@@ -164,28 +164,28 @@ mod TestFile {
 
     @test
     def skipBytes01(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     f -> File.skipBytes!(0, f) *> File.readChar!(f),
                     ch -> ch == 'A')
             |> Result.getWithDefault(false)
 
     @test
     def skipBytes02(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     f -> File.skipBytes!(2, f) *> File.readChar!(f),
                     ch -> ch == 'B')
             |> Result.getWithDefault(false)
 
     @test
     def skipBytes03(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     f -> File.skipBytes!(4, f) *> File.readChar!(f),
                     ch -> ch == 'C')
             |> Result.getWithDefault(false)
 
     @test
     def skipBytes04(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     f -> File.skipBytes!(-1, f) *> File.readChar!(f),
                     ch -> ch == 'A')
             |> Result.getWithDefault(false)
@@ -212,7 +212,7 @@ mod TestFile {
     def read01(): Bool \ IO = region rc {
         let arr: Array[Int8, rc] = Array.empty(rc, 1);
         let expected = Array#{-1i8} @ rc;
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/255-1byte.bin",
+        testReadFunction("test-resources/255-1byte.bin",
                     File.read!(arr),
                     _ -> Array.sameElements(arr, expected))
             |> Result.getWithDefault(false)
@@ -222,7 +222,7 @@ mod TestFile {
     def read02(): Bool \ IO = region rc {
         let arr: Array[Int8, rc] = Array.empty(rc, 8);
         let expected = Array#{0i8, 65i8, 0i8, 66i8, 0i8, 67i8, 0i8, 68i8} @ rc;
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     File.read!(arr),
                     _ -> Array.sameElements(arr, expected))
             |> Result.getWithDefault(false)
@@ -236,7 +236,7 @@ mod TestFile {
     def readWith01(): Bool \ IO = region rc {
         let arr: Array[Int8, rc] = Array.empty(rc, 6);
         let expected = Array#{0i8, 65i8, 0i8, 66i8, 0i8, 0i8} @ rc;
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     File.readWith!(destOffset = 0, length = 4, arr),
                     _ -> Array.sameElements(arr, expected))
             |> Result.getWithDefault(false)
@@ -246,7 +246,7 @@ mod TestFile {
     def readWith02(): Bool \ IO = region rc {
         let arr: Array[Int8, rc] = Array.empty(rc, 6);
         let expected = Array#{0i8, 0i8, 0i8, 65i8, 0i8, 66i8} @ rc;
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     File.readWith!(destOffset = 2, length = 4, arr),
                     _ -> Array.sameElements(arr, expected))
             |> Result.getWithDefault(false)
@@ -260,7 +260,7 @@ mod TestFile {
     def readFully01(): Bool \ IO = region rc {
         let arr: Array[Int8, rc] = Array.empty(rc, 1);
         let expected = Array#{-1i8} @ rc;
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/255-1byte.bin",
+        testReadFunction("test-resources/255-1byte.bin",
                     File.readFully!(arr),
                     _ -> Array.sameElements(arr, expected))
             |> Result.getWithDefault(false)
@@ -270,7 +270,7 @@ mod TestFile {
     def readFully02(): Bool \ IO = region rc {
         let arr: Array[Int8, rc] = Array.empty(rc, 8);
         let expected = Array#{0i8, 65i8, 0i8, 66i8, 0i8, 67i8, 0i8, 68i8} @ rc;
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     File.readFully!(arr),
                     _ -> Array.sameElements(arr, expected))
             |> Result.getWithDefault(false)
@@ -284,7 +284,7 @@ mod TestFile {
     def readFullyWith01(): Bool \ IO = region rc {
         let arr: Array[Int8, rc] = Array.empty(rc, 6);
         let expected = Array#{0i8, 65i8, 0i8, 66i8, 0i8, 0i8} @ rc;
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     File.readFullyWith!(destOffset = 0, length = 4, arr),
                     _ -> Array.sameElements(arr, expected))
             |> Result.getWithDefault(false)
@@ -294,7 +294,7 @@ mod TestFile {
     def readFullyWith02(): Bool \ IO = region rc {
         let arr: Array[Int8, rc] = Array.empty(rc, 6);
         let expected = Array#{0i8, 0i8, 0i8, 65i8, 0i8, 66i8} @ rc;
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     File.readFullyWith!(destOffset = 2, length = 4, arr),
                     _ -> Array.sameElements(arr, expected))
             |> Result.getWithDefault(false)
@@ -306,14 +306,14 @@ mod TestFile {
 
     @test
     def readByte01(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/1-1byte.bin",
+        testReadFunction("test-resources/1-1byte.bin",
                     File.readByte!,
                     i -> i == 1)
             |> Result.getWithDefault(false)
 
     @test
     def readByte02(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/255-1byte.bin",
+        testReadFunction("test-resources/255-1byte.bin",
                     File.readByte!,
                     i -> i == 255)
             |> Result.getWithDefault(false)
@@ -324,14 +324,14 @@ mod TestFile {
 
     @test
     def readBool01(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     File.readBool!,
                     b -> b == false)
             |> Result.getWithDefault(false)
 
     @test
     def readBool02(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/255-1byte.bin",
+        testReadFunction("test-resources/255-1byte.bin",
                     File.readBool!,
                     b -> b == true)
             |> Result.getWithDefault(false)
@@ -342,7 +342,7 @@ mod TestFile {
 
     @test
     def readChar01(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/ABCD.bin",
+        testReadFunction("test-resources/ABCD.bin",
                     File.readChar!,
                     ch -> ch == 'A')
             |> Result.getWithDefault(false)
@@ -353,7 +353,7 @@ mod TestFile {
 
     @test
     def readInt801(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/255-1byte.bin",
+        testReadFunction("test-resources/255-1byte.bin",
                     File.readInt8!,
                     i -> i == -1i8)
             |> Result.getWithDefault(false)
@@ -364,7 +364,7 @@ mod TestFile {
 
     @test
     def readInt161(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/255-2bytes.bin",
+        testReadFunction("test-resources/255-2bytes.bin",
                     File.readInt16!,
                     i -> i == 255i16)
             |> Result.getWithDefault(false)
@@ -375,7 +375,7 @@ mod TestFile {
 
     @test
     def readInt321(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/255-4bytes.bin",
+        testReadFunction("test-resources/255-4bytes.bin",
                     File.readInt32!,
                     i -> i == 255)
             |> Result.getWithDefault(false)
@@ -386,7 +386,7 @@ mod TestFile {
 
     @test
     def readInt641(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/255-8bytes.bin",
+        testReadFunction("test-resources/255-8bytes.bin",
                     File.readInt64!,
                     i -> i == 255i64)
             |> Result.getWithDefault(false)
@@ -397,7 +397,7 @@ mod TestFile {
 
     @test
     def readFloat321(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/1-float.bin",
+        testReadFunction("test-resources/1-float.bin",
                     File.readFloat32!,
                     d -> d == 1.0f32)
             |> Result.getWithDefault(false)
@@ -408,7 +408,7 @@ mod TestFile {
 
     @test
     def readFloat641(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/1-double.bin",
+        testReadFunction("test-resources/1-double.bin",
                     File.readFloat64!,
                     d -> d == 1.0f64)
             |> Result.getWithDefault(false)
@@ -419,14 +419,14 @@ mod TestFile {
 
     @test
     def readUnsignedByte01(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/1-1byte.bin",
+        testReadFunction("test-resources/1-1byte.bin",
                     File.readUnsignedByte!,
                     i -> i == 1)
             |> Result.getWithDefault(false)
 
     @test
     def readUnsignedByte02(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/255-1byte.bin",
+        testReadFunction("test-resources/255-1byte.bin",
                     File.readUnsignedByte!,
                     i -> i == 255)
             |> Result.getWithDefault(false)
@@ -437,7 +437,7 @@ mod TestFile {
 
     @test
     def readUnsignedShort01(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/modified-utf8.txt",
+        testReadFunction("test-resources/modified-utf8.txt",
                     File.readUnsignedShort!,
                     i -> i == 12)
             |> Result.getWithDefault(false)
@@ -448,7 +448,7 @@ mod TestFile {
 
     @test
     def readLine01(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/multiline.txt",
+        testReadFunction("test-resources/multiline.txt",
                     File.readLine!,
                     s -> s == "Sample text for TestFile.flix")
             |> Result.getWithDefault(false)
@@ -459,7 +459,7 @@ mod TestFile {
 
     @test
     def readModifiedUTF01(): Bool \ IO =
-        testReadFunction("./main/test/ca/uwaterloo/flix/library/testdata/modified-utf8.txt",
+        testReadFunction("test-resources/modified-utf8.txt",
                     File.readModifiedUTF!,
                     s -> s == "Hello World!")
             |> Result.getWithDefault(false)
