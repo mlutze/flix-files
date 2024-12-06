@@ -27,7 +27,7 @@ mod TestFile {
 
     @test
     def testAccessTime01(): Bool \ IO =
-        Result.isOk(accessTime("README.md"))
+        Result.isOk(accessTime("test-resources/file.txt"))
 
     /////////////////////////////////////////////////////////////////////////////
     // creationTime                                                            //
@@ -35,7 +35,7 @@ mod TestFile {
 
     @test
     def testCreationTime01(): Bool \ IO =
-        Result.isOk(creationTime("README.md"))
+        Result.isOk(creationTime("test-resources/file.txt"))
 
     /////////////////////////////////////////////////////////////////////////////
     // modificationTime                                                        //
@@ -43,7 +43,7 @@ mod TestFile {
 
     @test
     def testModificationTime01(): Bool \ IO =
-        Result.isOk(modificationTime("README.md"))
+        Result.isOk(modificationTime("test-resources/file.txt"))
 
     /////////////////////////////////////////////////////////////////////////////
     // size                                                                    //
@@ -51,7 +51,7 @@ mod TestFile {
 
     @test
     def testSize01(): Bool \ IO =
-        Result.isOk(size("README.md"))
+        Result.isOk(size("test-resources/file.txt"))
 
     /////////////////////////////////////////////////////////////////////////////
     // stat                                                                    //
@@ -59,11 +59,11 @@ mod TestFile {
 
     @test
     def testStat01(): Bool \ IO =
-        Result.isOk(stat("README.md"))
+        Result.isOk(stat("test-resources/file.txt"))
 
     @test
     def testStat02(): Bool \ IO =
-        match stat("README.md") {
+        match stat("test-resources/file.txt") {
             case Ok(v) => v#fileType == Files.FileType.File
             case _ => false
         }
@@ -74,11 +74,11 @@ mod TestFile {
 
     @test
     def testExists01(): Bool \ IO =
-        exists("./README.md") == Ok(true)
+        exists("./test-resources/file.txt") == Ok(true)
 
     @test
     def testExists02(): Bool \ IO =
-        exists("./fakeREADME.md") == Ok(false)
+        exists("./faketest-resources/file.txt") == Ok(false)
 
     /////////////////////////////////////////////////////////////////////////////
     // isDirectory                                                             //
@@ -86,11 +86,11 @@ mod TestFile {
 
     @test
     def testIsDirectory01(): Bool \ IO =
-        isDirectory("./main/test/ca/uwaterloo/flix/library") == Ok(true)
+        isDirectory("./test-resources/directory") == Ok(true)
 
     @test
     def testIsDirectory02(): Bool \ IO =
-        isDirectory("./README.md") == Ok(false)
+        isDirectory("./test-resources/file.txt") == Ok(false)
 
     /////////////////////////////////////////////////////////////////////////////
     // isRegularFile                                                           //
@@ -98,11 +98,11 @@ mod TestFile {
 
     @test
     def testIsRegularFile01(): Bool \ IO =
-        isRegularFile("./main/test/ca/uwaterloo/flix/library") == Ok(false)
+        isRegularFile("./test-resources/directory") == Ok(false)
 
     @test
     def testIsRegularFile02(): Bool \ IO =
-        isRegularFile("./README.md") == Ok(true)
+        isRegularFile("./test-resources/file.txt") == Ok(true)
 
     /////////////////////////////////////////////////////////////////////////////
     // isReadable                                                              //
@@ -110,11 +110,11 @@ mod TestFile {
 
     @test
     def testIsReadable01(): Bool \ IO =
-        isReadable("./README.md") == Ok(true)
+        isReadable("./test-resources/file.txt") == Ok(true)
 
     @test
     def testIsReadable02(): Bool \ IO =
-        isReadable("./fakeREADME.md") == Ok(false)
+        isReadable("./faketest-resources/file.txt") == Ok(false)
 
     /////////////////////////////////////////////////////////////////////////////
     // isSymbolicLink                                                          //
@@ -122,7 +122,7 @@ mod TestFile {
 
     @test
     def testIsSymbolicLink(): Bool \ IO =
-        isSymbolicLink("./README.md") == Ok(false)
+        isSymbolicLink("./test-resources/file.txt") == Ok(false)
 
     /////////////////////////////////////////////////////////////////////////////
     // isWritable                                                              //
@@ -130,11 +130,11 @@ mod TestFile {
 
     @test
     def testIsWritable01(): Bool \ IO =
-        isWritable("./README.md") == Ok(true)
+        isWritable("./test-resources/file.txt") == Ok(true)
 
     @test
     def testIsWritable02(): Bool \ IO =
-        isWritable("./fakeREADME.md") == Ok(false)
+        isWritable("./faketest-resources/file.txt") == Ok(false)
 
     /////////////////////////////////////////////////////////////////////////////
     // isExecutable                                                            //
@@ -142,7 +142,7 @@ mod TestFile {
 
     @test
     def testIsExecutable(): Bool \ IO =
-        isExecutable("./fakeREADME.md") == Ok(false)
+        isExecutable("./faketest-resources/file.txt") == Ok(false)
 
     /////////////////////////////////////////////////////////////////////////////
     // readLines                                                               //
@@ -150,7 +150,7 @@ mod TestFile {
 
     @test
     def testReadLines01(): Bool \ IO =
-        Result.isOk(readLines("./LICENSE.md"))
+        Result.isOk(readLines("./test-resources/file.txt"))
 
     /////////////////////////////////////////////////////////////////////////////
     // readLinesWith                                                           //
@@ -158,7 +158,7 @@ mod TestFile {
 
     @test
     def testReadLinesWith01(): Bool \ IO =
-        Result.isOk(readLinesWith({charSet = "UTF8"}, "./LICENSE.md"))
+        Result.isOk(readLinesWith({charSet = "UTF8"}, "./test-resources/file.txt"))
 
     /////////////////////////////////////////////////////////////////////////////
     // read                                                                    //
@@ -166,7 +166,7 @@ mod TestFile {
 
     @test
     def testRead01(): Bool \ IO =
-        Result.isOk(read("./LICENSE.md"))
+        Result.isOk(read("./test-resources/file.txt"))
 
     /////////////////////////////////////////////////////////////////////////////
     // readWith                                                                //
@@ -174,27 +174,27 @@ mod TestFile {
 
     @test
     def testReadWith01(): Bool \ IO =
-        Result.isOk(readWith({offset = 2i64, count = 2, charSet = "UTF8"}, "./LICENSE.md"))
+        Result.isOk(readWith({offset = 2i64, count = 2, charSet = "UTF8"}, "./test-resources/file.txt"))
 
     @test
     def testReadWith02(): Bool \ IO =
-        readWith({offset = 2i64, count = 2, charSet = "US-ASCII"}, "./LICENSE.md") == Ok("ac")
+        readWith({offset = 2i64, count = 2, charSet = "US-ASCII"}, "./test-resources/file.txt") == Ok("is")
 
     @test
     def testReadWith03(): Bool \ IO =
-        readWith({offset = 0i64, count = 0, charSet = "US-ASCII"}, "./LICENSE.md") == Ok("")
+        readWith({offset = 0i64, count = 0, charSet = "US-ASCII"}, "./test-resources/file.txt") == Ok("")
 
     @test
     def testReadWith04(): Bool \ IO =
-        readWith({offset = -10i64, count = 0, charSet = "US-ASCII"}, "./LICENSE.md") == Ok("")
+        readWith({offset = -10i64, count = 0, charSet = "US-ASCII"}, "./test-resources/file.txt") == Ok("")
 
     @test
     def testReadWith05(): Bool \ IO =
-        Result.isErr(readWith({offset = 0i64, count = -100, charSet = "US-ASCII"}, "./LICENSE.md"))
+        Result.isErr(readWith({offset = 0i64, count = -100, charSet = "US-ASCII"}, "./test-resources/file.txt"))
 
     @test
     def testReadWith06(): Bool \ IO =
-        Result.isErr(readWith({offset = -10i64, count = 10, charSet = "US-ASCII"}, "./LICENSE.md"))
+        Result.isErr(readWith({offset = -10i64, count = 10, charSet = "US-ASCII"}, "./test-resources/file.txt"))
 
 
     /////////////////////////////////////////////////////////////////////////////
@@ -203,7 +203,7 @@ mod TestFile {
 
     @test
     def testReadLinesIter01(): Bool \ IO = region rc {
-        let iter = readLinesIter(rc, "./LICENSE.md");
+        let iter = readLinesIter(rc, "./test-resources/file.txt");
         match Iterator.next(iter) {
             case Some(Ok(_)) => true
             case _           => false
@@ -213,7 +213,7 @@ mod TestFile {
 
     @test
     def testReadLinesIter02(): Bool \ IO = region rc {
-        let iter = readLinesIter(rc, "./LICENSE.md");
+        let iter = readLinesIter(rc, "./test-resources/file.txt");
         discard Iterator.next(iter);
         match Iterator.next(iter) {
             case Some(Ok(_)) => true
@@ -227,7 +227,7 @@ mod TestFile {
 
     @test
     def testReadLinesIterWithWith01(): Bool \ IO = region rc {
-        let iter = readLinesIterWith(rc, {charSet = "utf8"}, "./LICENSE.md");
+        let iter = readLinesIterWith(rc, {charSet = "utf8"}, "./test-resources/file.txt");
         match Iterator.next(iter) {
             case Some(Ok(_)) => true
             case _           => false
@@ -240,7 +240,7 @@ mod TestFile {
 
     @test
     def testReadBytes01(): Bool \ IO = region rc {
-        Result.isOk(readBytes(rc, "./LICENSE.md"))
+        Result.isOk(readBytes(rc, "./test-resources/file.txt"))
     }
 
     /////////////////////////////////////////////////////////////////////////////
@@ -249,12 +249,12 @@ mod TestFile {
 
     @test
     def testReadBytesWith01(): Bool \ IO = region rc {
-        Result.isOk(readBytesWith(rc, {offset = 2i64, count = 2}, "./LICENSE.md"))
+        Result.isOk(readBytesWith(rc, {offset = 2i64, count = 2}, "./test-resources/file.txt"))
     }
 
     @test
     def testReadBytesWith02(): Bool \ IO = region rc {
-        match readBytesWith(rc, {offset = 2i64, count = 2}, "./LICENSE.md") {
+        match readBytesWith(rc, {offset = 2i64, count = 2}, "./test-resources/file.txt") {
             case Ok(v) => Array.length(v) == 2
             case _     => false
         }
@@ -262,15 +262,15 @@ mod TestFile {
 
     @test
     def testReadBytesWith03(): Bool \ IO = region rc {
-        match readBytesWith(rc, {offset = 10i64, count = 4}, "./LICENSE.md") {
-            case Ok(v) => v `Array.sameElements` Array#{101i8, 110i8, 115i8, 101i8} @ rc
+        match readBytesWith(rc, {offset = 10i64, count = 4}, "./test-resources/file.txt") {
+            case Ok(v) => v `Array.sameElements` Array#{102i8, 105i8, 108i8, 101i8} @ rc
             case _     => false
         }
     }
 
     @test
     def testReadBytesWith04(): Bool \ IO = region rc {
-        match readBytesWith(rc, {offset = 0i64, count = 0}, "./LICENSE.md") {
+        match readBytesWith(rc, {offset = 0i64, count = 0}, "./test-resources/file.txt") {
             case Ok(v) => v `Array.sameElements` Array#{} @ rc
             case _     => false
         }
@@ -278,7 +278,7 @@ mod TestFile {
 
     @test
     def testReadBytesWith05(): Bool \ IO = region rc {
-        match readBytesWith(rc, {offset = -10i64, count = 0}, "./LICENSE.md") {
+        match readBytesWith(rc, {offset = -10i64, count = 0}, "./test-resources/file.txt") {
             case Ok(v) => v `Array.sameElements` Array#{} @ rc
             case _     => false
         }
@@ -286,12 +286,12 @@ mod TestFile {
 
     @test
     def testReadBytesWith06(): Bool \ IO = region rc {
-        Result.isErr(readBytesWith(rc, {offset = 0i64, count = -10}, "./LICENSE.md"))
+        Result.isErr(readBytesWith(rc, {offset = 0i64, count = -10}, "./test-resources/file.txt"))
     }
 
     @test
     def testReadBytesWith07(): Bool \ IO = region rc {
-        Result.isErr(readBytesWith(rc, {offset = -10i64, count = 10}, "./LICENSE.md"))
+        Result.isErr(readBytesWith(rc, {offset = -10i64, count = 10}, "./test-resources/file.txt"))
     }
 
     /////////////////////////////////////////////////////////////////////////////
@@ -300,7 +300,7 @@ mod TestFile {
 
     @test
     def testReadChunks01(): Bool \ IO = region rc {
-        let iter = readChunks(rc, 2, "./LICENSE.md");
+        let iter = readChunks(rc, 2, "./test-resources/file.txt");
         match Iterator.next(iter) {
             case Some(Ok(_)) => true
             case _           => false
@@ -309,7 +309,7 @@ mod TestFile {
 
     @test
     def testReadChunks02(): Bool \ IO = region rc {
-        let iter = readChunks(rc, 2, "./LICENSE.md");
+        let iter = readChunks(rc, 2, "./test-resources/file.txt");
         discard  Iterator.next(iter);
         match Iterator.next(iter) {
             case Some(Ok(_)) => true
@@ -319,7 +319,7 @@ mod TestFile {
 
     @test
     def testReadChunks03(): Bool \ IO = region rc {
-        let iter = readChunks(rc, 0, "./LICENSE.md");
+        let iter = readChunks(rc, 0, "./test-resources/file.txt");
         match Iterator.next(iter) {
             case Some(Err(_)) => true
             case _            => false
@@ -328,7 +328,7 @@ mod TestFile {
 
     @test
     def testReadChunks04(): Bool \ IO = region rc {
-        let iter = readChunks(rc, -10, "./LICENSE.md");
+        let iter = readChunks(rc, -10, "./test-resources/file.txt");
         match Iterator.next(iter) {
             case Some(Err(_)) => true
             case _            => false

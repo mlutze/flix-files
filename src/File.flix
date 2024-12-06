@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- import java.io.RandomAccessFile
+import java.io.RandomAccessFile
 
 ///
 /// Represents a RandomAccessFile - a read-only or read-write file with random access.
@@ -23,11 +23,6 @@
 /// numbers so it is inadequate for serializing data portably.
 ///
 enum File(RandomAccessFile)
-
-instance Reader[File] {
-    pub def read(b: Array[Int8, r], r: File): Result[IOError, Int32] \ {IO, r} =
-        File.read!(b, r)
-}
 
 mod File {
 
