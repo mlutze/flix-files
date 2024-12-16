@@ -23,12 +23,16 @@ mod TestFile {
     import java.io.IOException
     import java.nio.file.Path
 
+    def getTemporaryDirectory(): Option[String] = {
+        unsafe Environment.handle(Environment.getTemporaryDirectory)()
+    }
+
     ///
     /// Helper - make a filepath within the temp directory.
     /// Use `java.nio.file.Path` functions for platform independence.
     ///
     def makeTempPath(fileName: String): Result[IOError, String] = region rc {
-        let tempdir = match Environment.getTemporaryDirectory() {
+        let tempdir = match getTemporaryDirectory() {
             case Some(dir)  => Ok(dir)
             case None       => Err(Generic("Could not find TemporaryDirectory"))
         };
