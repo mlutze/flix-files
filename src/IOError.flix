@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-pub enum IOError with Eq, Order, ToString, Hash, Sendable {
+pub enum IOError with Eq, Order, ToString, Hash {
     case Generic(String)
 }
 
